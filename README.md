@@ -8,4 +8,4 @@ Custom ratings were created based on the data. `count` metric was created, which
 
 A new dataframe excluding outliers was created in order to better display the box plot. `count` and `rating` metrics were both heavily skewed toward lower intensity. The outliers were removed in order to obtain a better scope of the whole as well as remove some data points with questionable data quality.
 
-Another new dataframe was created to only include disasters after 1980 due to poor data quality. This dataframe is intended to be used for the line graph, illustrating change in `count`/`rating` over time.
+Another new dataframe was created to only include disasters after 1980 due to poor data quality. This dataframe is intended to be used for the line graph, illustrating change in `count` or `rating` over time.
