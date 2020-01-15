@@ -1,5 +1,8 @@
 This project utilizes data from FEMA found here: https://www.fema.gov/openfema-dataset-disaster-declarations-summaries-v1
 
+Columns from the csv utilizes were:
+`disasterNumber` `state` `fyDeclared` `incidentType` `title` `incidentBeginDate` `incidentEndDate`
+
 A python script was then written to analyze the data from the csv file that was downloaded. 
 
 Custom ratings were created based on the data. `count` metric was created, which simply measures the amount of times a `disasterNumber` was repeated. The more the `disasterNumber` recurred, the more severe the disaster was. 
