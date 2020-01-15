@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Oct 31 17:58:03 2019
 
-@author: markm
-"""
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -11,7 +7,7 @@ import numpy as np
 from scipy import stats
 
 # Creating dataframe
-df = pd.read_csv(r'DisasterDeclarationsSummaries.csv')
+df = pd.read_csv('DisasterDeclarationsSummaries.csv')
 
 # Determining disaster type frequency
 disaster_frequency = df.groupby('incidentType')['disasterNumber'].nunique().reset_index()
