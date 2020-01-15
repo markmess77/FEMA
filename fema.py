@@ -19,7 +19,7 @@ most_frequent = most_frequent['incidentType']
 # Renaming column
 disaster_frequency.rename(columns = {'disasterNumber': 'frequency'}, inplace = True) 
 
-# Dropping columns to prapre for filtered dataframe
+# Dropping columns to prepare for filtered dataframe
 df = df.drop(['ihProgramDeclared', 'iaProgramDeclared',
        'paProgramDeclared', 'hmProgramDeclared', 'declarationDate','disasterType',
        'disasterCloseOutDate','declaredCountyArea', 'placeCode', 'hash', 'lastRefresh'], axis=1)
@@ -44,7 +44,7 @@ df_outliers = df[(np.abs(stats.zscore(df['count'])) < 3)]
 df['count'] = pd.to_numeric(df['count'])
 years_total = df.groupby(['fyDeclared', 'incidentType'])['count', 'rating'].sum().reset_index()
 
-# New df only for diaster after 1980
+# New df only for disasters after 1980
 after_1980 = years_total['fyDeclared'] >= 1980
 after_1980 = years_total[after_1980]
 
