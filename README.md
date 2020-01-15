@@ -4,5 +4,5 @@ A python script was then written to analyze the data from the csv file that was 
 
 Custom ratings were created based on the data. `count` metric was created, which simply measures the amount of times a `disasterNumber` was repeated. The more the `disasterNumber` recurred, the more severe the diaster was. 
 
-`rating` was the second metric created to illustrate the severity of each disaster. This was measured simply by dividing the `Count` by the absolute value of the duration (in days) a disaster lasted. Absolute values were necessary as data quality was not always ideal as some disasters had a duration of a negative value.
+`rating` was the second metric created to illustrate the severity of each disaster. This was measured simply by dividing the `count` by the absolute value of the duration (in days) a disaster lasted. Absolute values were necessary as data quality was not always ideal as some disasters had a duration of a negative value.
 
