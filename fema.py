@@ -11,7 +11,7 @@ import numpy as np
 from scipy import stats
 
 # Creating dataframe
-df = pd.read_csv(r'C:\Users\markm\OneDrive\Desktop\Python\DS\FEMA\DisasterDeclarationsSummaries.csv')
+df = pd.read_csv(r'DisasterDeclarationsSummaries.csv')
 
 # Determining disaster type frequency
 disaster_frequency = df.groupby('incidentType')['disasterNumber'].nunique().reset_index()
