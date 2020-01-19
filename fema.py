@@ -17,7 +17,11 @@ most_frequent = disaster_frequency.head(n=6)
 most_frequent = most_frequent['incidentType']
 
 # Renaming column
-disaster_frequency.rename(columns = {'disasterNumber': 'frequency'}, inplace = True) 
+disaster_frequency.rename(columns = {'disasterNumber': 'frequency'}, inplace = True)
+
+# Finding frequency of disasters by year 
+frequency_year = df.groupby(['incidentType', 'fyDeclared'])['disasterNumber'].nunique().reset_index()
+frequency_year.rename(columns = {'disasterNumber': 'frequency'}, inplace = True)
 
 # Dropping columns to prepare for filtered dataframe
 df = df.drop(['ihProgramDeclared', 'iaProgramDeclared',
@@ -27,7 +31,8 @@ df = df.drop(['ihProgramDeclared', 'iaProgramDeclared',
 # Storing duration of each event in days
 df['incidentBeginDate'] = pd.to_datetime(df['incidentBeginDate'])
 df['incidentEndDate'] = pd.to_datetime(df['incidentEndDate'])
-df['durationDays'] = (df['incidentEndDate'] - df['incidentBeginDate']).dt.days
+new_col = (df['incidentEndDate'] - df['incidentBeginDate']).dt.days
+df.insert(7, 'durationDays', new_col)
 
 # Grouping by number of disasterNumber occurrences to indicate magnitude
 df = df.groupby(list(df.columns)).size().reset_index().rename(columns={0:'count'})
@@ -37,8 +42,8 @@ df['durationDays'] += df['durationDays'].eq(0) # converting 0's to 1's
 df['rating'] = df['count'] / abs(df['durationDays']) # better remove negatives  or take absolute value?
 
 # Creating new df excluding outliers
-df_outliers = df[(np.abs(stats.zscore(df['rating'])) < 3)]
-df_outliers = df[(np.abs(stats.zscore(df['count'])) < 3)]
+rating_outliers = df[(np.abs(stats.zscore(df['rating'])) < 3)]
+count_outliers = df[(np.abs(stats.zscore(df['count'])) < 3)]
 
 # Finding total count/rating by year of all disaster types
 df['count'] = pd.to_numeric(df['count'])
@@ -64,7 +69,7 @@ def boxplot(data, x, y1, y2):
     axes[1].set_ylabel(y2.capitalize(), fontsize=15)
     axes[1].set_xlabel('Disaster Type', fontsize=15)
     
-boxplot(df_outliers, 'incidentType', 'count', 'rating')
+boxplot(df, 'incidentType', 'count', 'rating')
 
 def line_plot(data, x, y, hue, title=None):
     sns.set_style('darkgrid')
@@ -74,6 +79,6 @@ def line_plot(data, x, y, hue, title=None):
     g = sns.FacetGrid(data=data, col=hue, col_wrap=2, hue=hue)
     g.map(sns.lineplot, x, y)
 
-line_plot(data=after_1980, x='fyDeclared', y='rating', hue='incidentType')
+line_plot(data=df, x='fyDeclared', y='incidentType', hue='incidentType')
 
 
