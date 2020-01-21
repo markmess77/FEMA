@@ -49,9 +49,26 @@ count_outliers = df[(np.abs(stats.zscore(df['count'])) < 3)]
 df['count'] = pd.to_numeric(df['count'])
 years_total = df.groupby(['fyDeclared', 'incidentType'])['count', 'rating'].sum().reset_index()
 
-# New df only for disasters after 1980
-after_1980 = years_total['fyDeclared'] >= 1980
-after_1980 = years_total[after_1980]
+# New df only for disasters after 2000
+rating_2000 = rating_outliers['fyDeclared'] >= 2000
+rating_2000 = rating_outliers[rating_2000]
+count_2000 = count_outliers['fyDeclared'] >= 2000
+count_2000 = count_outliers[count_2000]
+
+average_count = count_2000.groupby('incidentType')['count'].mean().reset_index()
+average_rating = rating_2000.groupby('incidentType')['rating'].mean().reset_index()
+
+# Grouping by disaster type / duration days
+target = ['Hurricane', 'Flood', 'Snow', 'Tornado']
+disaster_duration = df.groupby('incidentType')['durationDays', 'count', 'rating'].mean().reset_index()
+x = disaster_duration['incidentType'].isin(target)
+disaster_duration = disaster_duration[x]
+
+# New df for average severity
+count_severity = count_2000.groupby('incidentType')['count'].mean().reset_index()
+rating_severity = rating_2000.groupby('incidentType')['rating'].mean().reset_index()
+severity = pd.merge(count_severity, rating_severity, on='incidentType', how='outer')
+severity = pd.merge(severity, disaster_frequency, on='incidentType', how='outer')
 
 def boxplot(data, x, y1, y2):
     sns.set_style('darkgrid')
@@ -69,7 +86,7 @@ def boxplot(data, x, y1, y2):
     axes[1].set_ylabel(y2.capitalize(), fontsize=15)
     axes[1].set_xlabel('Disaster Type', fontsize=15)
     
-boxplot(df, 'incidentType', 'count', 'rating')
+boxplot(rating_outliers, 'incidentType', 'count', 'rating')
 
 def line_plot(data, x, y, hue, title=None):
     sns.set_style('darkgrid')
